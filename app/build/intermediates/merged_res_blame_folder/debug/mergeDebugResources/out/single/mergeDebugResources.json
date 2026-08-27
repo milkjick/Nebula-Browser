@@ -1,0 +1,190 @@
+[
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_script.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_script.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_screenshot.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_screenshot.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_search.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_search.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_pip.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_pip.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_find_in_page.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_find_in_page.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_palette.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_palette.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_desktop.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_desktop.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_mcp.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_mcp.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_incognito.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_incognito.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_ai_agent.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_ai_agent.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_adblock.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_adblock.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_clear_cache.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_clear_cache.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/mipmap_ic_launcher_round.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/mipmap/ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_ai_translate.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_ai_translate.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/layout_item_mcp_switch_row.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/layout/item_mcp_switch_row.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_code.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_code.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_open_external.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_open_external.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_permission.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_permission.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_article.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_article.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_save_page.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_save_page.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_translate_settings.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_translate_settings.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_history.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_history.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_copy_link.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_copy_link.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_share.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_share.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_sniffer.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_sniffer.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/mipmap_ic_launcher.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/mipmap/ic_launcher.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/xml_network_security_config.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/xml/network_security_config.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/layout_sheet_mcp_info.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/layout/sheet_mcp_info.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/layout_item_mcp_row.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/layout/item_mcp_row.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_reading_mode.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_reading_mode.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_developer.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_developer.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_address_bg.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/address_bg.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_copy_text.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_copy_text.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_translate.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_translate.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_video_enhance.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_video_enhance.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_translate_auto.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_translate_auto.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_bookmark.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_bookmark.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/xml_file_paths.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/xml/file_paths.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_refresh.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_refresh.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_newtab.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_newtab.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_bg_url_input.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/bg_url_input.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_download.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_download.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/layout_activity_main.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.mice.nebulamcp.app-debug-32:/drawable_ic_bookmark_add.xml.flat",
+        "source": "com.mice.nebulamcp.app-main-34:/drawable/ic_bookmark_add.xml"
+    }
+]

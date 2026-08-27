@@ -1,0 +1,17 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="24" android:viewportHeight="24">
+    <!-- 文字气泡 A，星云青 -->
+    <path android:fillColor="#00000000"
+        android:strokeColor="#FF22D3EE" android:strokeWidth="2"
+        android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M4,5 H12 V13 H8 L6,15.5 V13 H4 Z" />
+    <!-- 文字气泡 文，星云紫 -->
+    <path android:fillColor="#00000000"
+        android:strokeColor="#FFA78BFA" android:strokeWidth="2"
+        android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M12,10 H20 V18 H16 L18,20.5 V18 H12 Z" />
+    <!-- 转换金星 -->
+    <path android:fillColor="#FFF59E0B"
+        android:pathData="M15,7 L15.6,8.4 L17,9 L15.6,9.6 L15,11 L14.4,9.6 L13,9 L14.4,8.4 Z" />
+</vector>

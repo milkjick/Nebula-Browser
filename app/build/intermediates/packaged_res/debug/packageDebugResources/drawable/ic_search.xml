@@ -1,0 +1,24 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="24" android:viewportHeight="24">
+
+    <!-- 放大镜镜片，星云青 -->
+    <path android:fillColor="#00000000"
+        android:strokeColor="#FF22D3EE" android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M10,10 m-6,0 a6,6 0 1,1 12,0 a6,6 0 1,1 -12,0" />
+
+    <!-- 镜柄，星云紫 -->
+    <path android:fillColor="#00000000"
+        android:strokeColor="#FFA78BFA" android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M15,15 L21,21" />
+
+    <!-- 镜片内星点，金星 -->
+    <path android:fillColor="#FFF59E0B"
+        android:pathData="M10,7 L10.5,8.5 L12,9 L10.5,9.5 L10,11 L9.5,9.5 L8,9 L9.5,8.5 Z" />
+
+    <!-- 镜柄端星 -->
+    <path android:fillColor="#FF22D3EE"
+        android:pathData="M21,19.8 L21.5,21 L22.8,21.5 L21.5,22 L21,23.2 L20.5,22 L19.2,21.5 L20.5,21 Z" />
+</vector>

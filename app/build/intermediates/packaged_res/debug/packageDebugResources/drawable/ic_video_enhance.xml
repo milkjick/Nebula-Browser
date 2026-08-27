@@ -1,0 +1,20 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="24" android:viewportHeight="24">
+    <!-- 屏幕边框，星云青 -->
+    <path android:fillColor="#00000000"
+        android:strokeColor="#FF22D3EE" android:strokeWidth="2"
+        android:strokeLineJoin="round" android:strokeLineCap="round"
+        android:pathData="M3,5.5 H21 V16.5 H3 Z" />
+    <!-- 播放三角，实心星云紫 -->
+    <path android:fillColor="#FFA78BFA"
+        android:pathData="M10,8.3 L15.5,11 L10,13.7 Z" />
+    <!-- 底部支架 -->
+    <path android:fillColor="#00000000"
+        android:strokeColor="#FF22D3EE" android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M9,20.5 H15 M12,16.5 V20.5" />
+    <!-- 倍速闪电，金星 -->
+    <path android:fillColor="#FFF59E0B"
+        android:pathData="M19.5,1.5 L17,5.2 H19 L18,8.5 L21.5,4.4 H19.3 Z" />
+</vector>

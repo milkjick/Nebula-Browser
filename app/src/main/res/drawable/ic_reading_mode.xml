@@ -1,0 +1,16 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="24" android:viewportHeight="24">
+    <!-- 摊开的书，星云青/紫 -->
+    <path android:fillColor="#00000000"
+        android:strokeColor="#FF22D3EE" android:strokeWidth="2"
+        android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M12,6 C10,4.5 7,4 4,4.5 V18.5 C7,18 10,18.5 12,20" />
+    <path android:fillColor="#00000000"
+        android:strokeColor="#FFA78BFA" android:strokeWidth="2"
+        android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M12,6 C14,4.5 17,4 20,4.5 V18.5 C17,18 14,18.5 12,20" />
+    <!-- 金星点缀 -->
+    <path android:fillColor="#FFF59E0B"
+        android:pathData="M12,2 L12.6,3.4 L14,4 L12.6,4.6 L12,6 L11.4,4.6 L10,4 L11.4,3.4 Z" />
+</vector>

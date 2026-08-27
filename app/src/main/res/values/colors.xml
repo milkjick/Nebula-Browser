@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 品牌主色 -->
+    <color name="brand_blue">#3B82F6</color>
+
+    <!-- 文字颜色 -->
+    <color name="text_primary">#111827</color>
+    <color name="text_secondary">#6B7280</color>
+
+    <!-- 页面与背景 -->
+    <color name="bg_page">#F5F6FA</color>
+    <color name="bg_url">#F3F4F6</color>
+    <color name="divider">#E5E7EB</color>
+
+    <!-- Nebula 主题色 -->
+    <color name="signal_cyan">#22D3EE</color>
+    <color name="reel_gold">#F59E0B</color>
+    <color name="nebula_bg">#F5F6FA</color>
+    <color name="nebula_surface">#FFFFFF</color>
+
+    <!-- 应用图标背景 -->
+    <color name="ic_launcher_background">#0F172A</color>
+</resources>

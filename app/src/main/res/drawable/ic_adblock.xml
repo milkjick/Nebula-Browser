@@ -1,0 +1,20 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="24" android:viewportHeight="24">
+
+    <!-- 盾牌，星云青 -->
+    <path android:fillColor="#00000000"
+        android:strokeColor="#FF22D3EE" android:strokeWidth="2"
+        android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M12,2 L4,5 V11 C4,16 7,20 12,22 C17,20 20,16 20,11 V5 Z" />
+
+    <!-- 斜杠，星云紫 -->
+    <path android:fillColor="#00000000"
+        android:strokeColor="#FFA78BFA" android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M4.5,4.5 L19.5,19.5" />
+
+    <!-- 盾顶金星 -->
+    <path android:fillColor="#FFF59E0B"
+        android:pathData="M12,1 L12.6,2.4 L14,3 L12.6,3.6 L12,5 L11.4,3.6 L10,3 L11.4,2.4 Z" />
+</vector>

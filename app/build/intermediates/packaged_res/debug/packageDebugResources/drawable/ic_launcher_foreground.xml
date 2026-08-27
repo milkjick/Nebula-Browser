@@ -1,0 +1,45 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- 外层星云环 -->
+    <path
+        android:pathData="M54,30a24,24 0 1,0 0.001,0z"
+        android:strokeColor="#22D3EE"
+        android:strokeWidth="4"
+        android:fillColor="#00000000" />
+
+    <!-- 倾斜轨道环 -->
+    <path
+        android:pathData="M30,72a36,24 0 1,1 48,0a36,24 0 1,1 -48,0z"
+        android:strokeColor="#8B5CF6"
+        android:strokeWidth="3"
+        android:fillColor="#00000000" />
+
+    <!-- 中心星球 -->
+    <path
+        android:pathData="M54,42a12,12 0 1,0 0.001,0z"
+        android:fillColor="#3B82F6" />
+
+    <!-- 星球高光 -->
+    <path
+        android:pathData="M49,39a5,5 0 1,0 0.001,0z"
+        android:fillColor="#93C5FD" />
+
+    <!-- 星点 1 -->
+    <path
+        android:pathData="M74,34a2,2 0 1,0 0.001,0z"
+        android:fillColor="#FFFFFF" />
+
+    <!-- 星点 2 -->
+    <path
+        android:pathData="M78,44a1.5,1.5 0 1,0 0.001,0z"
+        android:fillColor="#FFFFFF" />
+
+    <!-- 星点 3 -->
+    <path
+        android:pathData="M68,70a1.8,1.8 0 1,0 0.001,0z"
+        android:fillColor="#FFFFFF" />
+</vector>

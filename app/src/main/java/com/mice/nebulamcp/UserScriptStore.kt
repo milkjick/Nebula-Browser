@@ -1,0 +1,185 @@
+package com.mice.nebulamcp
+
+import android.content.Context
+import android.net.Uri
+import java.io.File
+import java.net.HttpURLConnection
+import java.net.URL
+import java.security.MessageDigest
+import java.util.UUID
+
+/** Lightweight Tampermonkey/Via-style userscript store. */
+class UserScriptStore(private val context: Context) {
+    data class Script(
+        val id: String,
+        val name: String,
+        val source: String,
+        val enabled: Boolean = true,
+        val matches: List<String> = listOf("*://*/*"),
+        val excludes: List<String> = emptyList(),
+        val runAt: String = "document-start"
+    )
+
+    private val dir = File(context.getExternalFilesDir(null), "scripts")
+
+    init { dir.mkdirs() }
+
+    @Synchronized fun list(): List<Script> = dir.listFiles { f -> f.name.endsWith(".user.js") }
+        ?.mapNotNull { read(it) }
+        ?.sortedBy { it.name.lowercase() } ?: emptyList()
+
+    @Synchronized fun save(script: Script) {
+        dir.mkdirs()
+        val safe = script.id.replace(Regex("[^A-Za-z0-9_-]"), "_")
+        File(dir, "$safe.user.js").writeText(script.source)
+        File(dir, "$safe.meta").writeText(buildMeta(script))
+    }
+
+    @Synchronized fun delete(id: String) {
+        val safe = id.replace(Regex("[^A-Za-z0-9_-]"), "_")
+        File(dir, "$safe.user.js").delete()
+        File(dir, "$safe.meta").delete()
+    }
+
+    @Synchronized fun setEnabled(id: String, enabled: Boolean) {
+        val s = list().find { it.id == id } ?: return
+        save(s.copy(enabled = enabled))
+    }
+
+    /**
+     * Removes scripts that are byte-for-byte duplicates of another script
+     * (same source content, regardless of name/id) — e.g. the same URL or
+     * file imported more than once before dedup-on-import existed. Keeps
+     * the first occurrence in list() order (alphabetical by name), deletes
+     * the rest. Returns how many were removed.
+     */
+    @Synchronized fun deduplicate(): Int {
+        val seen = mutableSetOf<String>()
+        var removed = 0
+        list().forEach { script ->
+            val hash = contentHash(script.source)
+            if (!seen.add(hash)) {
+                delete(script.id)
+                removed++
+            }
+        }
+        return removed
+    }
+
+    /** Returns the existing script with identical content, if any. */
+    private fun findDuplicate(source: String): Script? {
+        val hash = contentHash(source)
+        return list().find { contentHash(it.source) == hash }
+    }
+
+    private fun contentHash(source: String): String {
+        val bytes = MessageDigest.getInstance("SHA-256").digest(source.trim().toByteArray(Charsets.UTF_8))
+        return bytes.joinToString("") { "%02x".format(it) }
+    }
+
+    /** @return the script and whether it was newly imported (false = an identical script already existed). */
+    fun importText(source: String, fallbackName: String = "Imported Script"): Pair<Script, Boolean> {
+        findDuplicate(source)?.let { return it to false }
+        val meta = parse(source)
+        val id = UUID.randomUUID().toString()
+        val script = Script(
+            id = id,
+            name = meta.name.ifBlank { fallbackName },
+            source = source,
+            enabled = true,
+            matches = if (meta.matches.isEmpty()) listOf("*://*/*") else meta.matches,
+            runAt = meta.runAt
+        )
+        save(script)
+        return script to true
+    }
+
+    fun importFile(uri: Uri): Pair<Script, Boolean> {
+        val source = context.contentResolver.openInputStream(uri)?.bufferedReader()?.use { it.readText() }
+            ?: error("无法读取脚本文件")
+        val name = uri.lastPathSegment?.substringAfterLast('/')?.substringBeforeLast('.') ?: "Imported Script"
+        return importText(source, name)
+    }
+
+    fun importUrl(url: String): Pair<Script, Boolean> {
+        val conn = (URL(url).openConnection() as HttpURLConnection)
+        conn.connectTimeout = 10000
+        conn.readTimeout = 20000
+        conn.setRequestProperty("User-Agent", "NebulaBrowser/1.0")
+        conn.connect()
+        if (conn.responseCode !in 200..299) error("下载失败 HTTP ${conn.responseCode}")
+        val source = conn.inputStream.bufferedReader().use { it.readText() }
+        val name = URL(url).path.substringAfterLast('/').ifBlank { "Remote Script" }.substringBeforeLast('.')
+        return importText(source, name)
+    }
+
+    fun matchingScripts(url: String): List<Script> = list().filter {
+        it.enabled && matchesAny(it.matches, url) && it.excludes.none { pattern -> patternMatches(pattern, url) }
+    }
+
+    private fun read(file: File): Script? = try {
+        val source = file.readText()
+        val meta = parse(source)
+        val id = file.name.removeSuffix(".user.js")
+        val enabled = !File(dir, "$id.meta").readTextOrNull().orEmpty().contains("enabled=false")
+        Script(
+            id = id,
+            name = meta.name.ifBlank { file.nameWithoutExtension },
+            source = source,
+            enabled = enabled,
+            matches = if (meta.matches.isEmpty()) listOf("*://*/*") else meta.matches,
+            excludes = meta.excludes,
+            runAt = meta.runAt
+        )
+    } catch (_: Exception) { null }
+
+    private fun buildMeta(s: Script) = "enabled=${s.enabled}\nname=${s.name}\nmatches=${s.matches.joinToString("\u001f")}\nrunAt=${s.runAt}\n"
+
+    private fun File.readTextOrNull(): String? = try { readText() } catch (_: Exception) { null }
+
+    private data class Meta(
+        val name: String = "",
+        val matches: List<String> = emptyList(),
+        val excludes: List<String> = emptyList(),
+        val runAt: String = "document-start"
+    )
+
+    private fun parse(source: String): Meta {
+        val start = source.indexOf("==UserScript==")
+        val end = source.indexOf("==/UserScript==")
+        if (start < 0 || end <= start) return Meta()
+        val block = source.substring(start, end)
+        val name = Regex("@name\\s+(.+)").find(block)?.groupValues?.get(1)?.trim().orEmpty()
+        val matches = Regex("@match\\s+(.+)").findAll(block).map { it.groupValues[1].trim() }.toList()
+        val include = Regex("@include\\s+(.+)").findAll(block).map { it.groupValues[1].trim() }.toList()
+        val exclude = Regex("@exclude\\s+(.+)").findAll(block).map { it.groupValues[1].trim() }.toList()
+        val runAt = Regex("@run-at\\s+(.+)").find(block)?.groupValues?.get(1)?.trim() ?: "document-start"
+        return Meta(name, (matches + include).distinct(), exclude.distinct(), runAt)
+    }
+
+    companion object {
+        fun matchesAny(patterns: List<String>, url: String): Boolean {
+            if (patterns.isEmpty()) return true
+            return patterns.any { patternMatches(it, url) }
+        }
+
+        private fun patternMatches(pattern: String, url: String): Boolean {
+            if (pattern == "<all_urls>" || pattern == "*" || pattern == "*://*/*") return true
+            return try {
+                val regex = globToRegex(pattern)
+                Regex(regex).matches(url)
+            } catch (_: Exception) {
+                false
+            }
+        }
+
+        /** 将简单的 @match 通配符规则转换为正则表达式 */
+        private fun globToRegex(pattern: String): String {
+            val p = pattern
+                .replace(".", "\\.")
+                .replace("*", ".*")
+                .replace("?", ".")
+            return "^$p$"
+        }
+    }
+}
