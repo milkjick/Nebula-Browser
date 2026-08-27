@@ -17,16 +17,6 @@ class NebulaApp : Application() {
 
     lateinit var toolRegistry: ToolRegistry
         private set
-    lateinit var vectorMemory: VectorMemoryStore
-        private set
-    lateinit var longTaskAgent: LongTaskAgent
-        private set
-    lateinit var workflowEngine: WorkflowEngine
-        private set
-    lateinit var localAiProvider: LocalAiProvider
-        private set
-    lateinit var videoUnderstanding: VideoUnderstanding
-        private set
 
     var mcpServer: McpServer? = null
         private set
@@ -37,11 +27,6 @@ class NebulaApp : Application() {
         settings = SettingsStore(this)
         remoteMcpManager = RemoteMcpManager(settings)
         toolRegistry = ToolRegistry(this)
-        vectorMemory = VectorMemoryStore(this)
-        longTaskAgent = LongTaskAgent(this, toolRegistry)
-        workflowEngine = WorkflowEngine(this, toolRegistry)
-        localAiProvider = LocalAiProvider(settings)
-        videoUnderstanding = VideoUnderstanding(this, localAiProvider)
 
         if (settings.mcpServiceEnabled) {
             startMcpServer()

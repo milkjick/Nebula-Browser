@@ -43,12 +43,6 @@ class AiAgent(private val context: Context, private val settings: SettingsStore,
     fun plan(userRequest: String, contextJson: String, done: (Result<Plan>) -> Unit) {
         executor.execute {
             try {
-                if (settings.aiProviderMode == "local") {
-                    val prompt = buildLocalAgentPrompt(userRequest, contextJson)
-                    val result = NebulaApp.instance.localAiProvider.ask(prompt)
-                    result.onSuccess { parsePlanAndFinish(it, done) }.onFailure { finish(done, Result.failure(it)) }
-                    return@execute
-                }
                 if (settings.aiProviderMode == "web") {
                     val prompt = buildWebAgentPrompt(userRequest, contextJson)
                     webAi?.ask(prompt) { result ->
@@ -65,7 +59,6 @@ You are Nebula Browser AI Agent. Return JSON only, no markdown.
 You can understand the supplied browser context and create a safe multi-step plan.
 Allowed browser actions: navigate, new_tab, back, click, input, scroll, search.
 Allowed MCP action: mcp_call.
-You can use long tasks (agent_task_create/agent_task_run), semantic long-term memory (agent_memory_upsert/agent_memory_search), saved workflows (workflow_save/workflow_run), local AI (local_ai_chat), and video analysis (video_ai_analyze) when relevant.
 The supplied BROWSER CONTEXT includes an "mcpTools" array (name + description) — only use tool names that appear there for mcp_call. It may also include a "memory" field with facts/notes you saved in earlier sessions; use agent_remember/agent_recall/agent_add_note (via mcp_call) to save anything worth remembering for next time (user preferences, task outcomes, ongoing progress).
 Prefer semantic DOM targets over brittle CSS. For click/input use selector produced by browser_ai_context; do not invent selectors.
 For risky actions (payments, destructive changes, account deletion, sending messages) create the plan but mark action confirmation=true. Never invent a selector; use an ai-* id from the context when possible.
@@ -78,21 +71,9 @@ JSON schema: {\"message\":string,\"actions\":[{\"action\":string,\"selector\":st
         }
     }
 
-
-    private fun buildLocalAgentPrompt(userRequest: String, contextJson: String): String = """
-You are Nebula Browser local AI Agent. Return JSON only, no markdown.
-Create a safe multi-step browser/MCP plan. Use selectors/ai-* targets from context and only advertised MCP tools.
-Schema: {"message":string,"actions":[{"action":string,"selector":string,"text":string,"url":string,"direction":"up|down","amount":number,"name":string,"arguments":object,"confirmation":boolean}]}
-USER REQUEST:
-$userRequest
-
-BROWSER CONTEXT:
-$contextJson
-""".trimIndent()
-
     private fun buildWebAgentPrompt(userRequest: String, contextJson: String): String = """
 You are Nebula Browser AI Agent. Return JSON only, no markdown.
-Create a safe multi-step browser/MCP plan from the supplied request and context. For tasks likely to exceed one short interaction, prefer creating a resumable agent_task with checkpoints.
+Create a safe multi-step browser/MCP plan from the supplied request and context.
 Allowed actions: navigate, new_tab, back, click, input, scroll, search, mcp_call.
 The supplied BROWSER CONTEXT includes an "mcpTools" array (name + description) — only use tool names that appear there for mcp_call, and a "memory" field with facts saved from earlier sessions (use agent_remember/agent_recall/agent_add_note via mcp_call to save anything worth remembering).
 For click/input use the ai-* semantic target from browser_ai_context when available.

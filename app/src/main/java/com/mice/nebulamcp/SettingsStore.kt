@@ -55,11 +55,6 @@ class SettingsStore(context: Context) {
     var aiModel: String get() = prefs.getString(KEY_AI_MODEL, "deepseek-chat") ?: "deepseek-chat"; set(v) = prefs.edit().putString(KEY_AI_MODEL, v).apply()
     var aiBaseUrl: String get() = prefs.getString(KEY_AI_BASE_URL, "https://api.deepseek.com") ?: "https://api.deepseek.com"; set(v) = prefs.edit().putString(KEY_AI_BASE_URL, v).apply()
     var aiRequireConfirmation: Boolean get() = prefs.getBoolean(KEY_AI_CONFIRM, true); set(v) = prefs.edit().putBoolean(KEY_AI_CONFIRM, v).apply()
-    /** OpenAI-compatible local model endpoint, e.g. http://127.0.0.1:11434/v1 */
-    var localAiBaseUrl: String get() = prefs.getString(KEY_LOCAL_AI_BASE_URL, "http://127.0.0.1:11434/v1") ?: "http://127.0.0.1:11434/v1"; set(v) = prefs.edit().putString(KEY_LOCAL_AI_BASE_URL, v).apply()
-    var localAiModel: String get() = prefs.getString(KEY_LOCAL_AI_MODEL, "llama3.2") ?: "llama3.2"; set(v) = prefs.edit().putString(KEY_LOCAL_AI_MODEL, v).apply()
-    var localAiApiKey: String get() = prefs.getString(KEY_LOCAL_AI_KEY, "") ?: ""; set(v) = prefs.edit().putString(KEY_LOCAL_AI_KEY, v).apply()
-    var aiLongTaskBatchSize: Int get() = prefs.getInt(KEY_AI_LONG_BATCH, 5); set(v) = prefs.edit().putInt(KEY_AI_LONG_BATCH, v.coerceIn(1, 20)).apply()
 
     /** 自定义主页 HTML（片段或完整 HTML） */
     var customHomeHtml: String
@@ -117,9 +112,5 @@ class SettingsStore(context: Context) {
         private const val KEY_AI_MODEL = "ai_model"
         private const val KEY_AI_BASE_URL = "ai_base_url"
         private const val KEY_AI_CONFIRM = "ai_require_confirmation"
-        private const val KEY_LOCAL_AI_BASE_URL = "local_ai_base_url"
-        private const val KEY_LOCAL_AI_MODEL = "local_ai_model"
-        private const val KEY_LOCAL_AI_KEY = "local_ai_key"
-        private const val KEY_AI_LONG_BATCH = "ai_long_task_batch"
     }
 }

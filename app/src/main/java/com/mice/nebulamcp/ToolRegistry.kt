@@ -127,23 +127,6 @@ class ToolRegistry(private val context: Context) {
         list.put(tool("agent_list_memory", "List all remembered facts and recent notes", JSONObject()))
         list.put(tool("agent_add_note", "Append a freeform note to Agent memory (e.g. a task outcome worth remembering)",
             JSONObject().put("text", JSONObject().put("type", "string")), listOf("text")))
-        list.put(tool("agent_memory_upsert", "Store searchable semantic Agent memory using a local vector index",
-            JSONObject().put("id", JSONObject().put("type", "string")).put("text", JSONObject().put("type", "string")), listOf("id", "text")))
-        list.put(tool("agent_memory_search", "Search long-term Agent memory by semantic similarity",
-            JSONObject().put("query", JSONObject().put("type", "string")).put("limit", JSONObject().put("type", "number")), listOf("query")))
-        list.put(tool("agent_task_create", "Create a resumable long-running Agent task from ordered tool steps",
-            JSONObject().put("goal", JSONObject().put("type", "string")).put("steps", JSONObject().put("type", "array")), listOf("goal", "steps")))
-        list.put(tool("agent_task_list", "List resumable Agent tasks", JSONObject()))
-        list.put(tool("agent_task_run", "Run a bounded batch of a resumable Agent task and checkpoint progress",
-            JSONObject().put("id", JSONObject().put("type", "string")).put("maxSteps", JSONObject().put("type", "number")), listOf("id")))
-        list.put(tool("workflow_save", "Save an ordered browser/MCP workflow",
-            JSONObject().put("name", JSONObject().put("type", "string")).put("steps", JSONObject().put("type", "array")), listOf("name", "steps")))
-        list.put(tool("workflow_list", "List saved workflows", JSONObject()))
-        list.put(tool("workflow_run", "Run a saved workflow", JSONObject().put("id", JSONObject().put("type", "string")), listOf("id")))
-        list.put(tool("local_ai_chat", "Call the configured OpenAI-compatible local AI model",
-            JSONObject().put("prompt", JSONObject().put("type", "string")), listOf("prompt")))
-        list.put(tool("video_ai_analyze", "Analyze a local/content/remote video with metadata and one representative frame when supported",
-            JSONObject().put("uri", JSONObject().put("type", "string")), listOf("uri")))
 
         list.put(tool("browser_download", "Download a direct file URL through the browser's download manager",
             JSONObject().put("url", JSONObject().put("type", "string")), listOf("url")))
@@ -202,16 +185,6 @@ class ToolRegistry(private val context: Context) {
                 "agent_forget" -> { agentMemory.forget(args.getString("key")); ok("已忘记：${args.getString("key")}") }
                 "agent_list_memory" -> ok(agentMemory.summaryText().ifBlank { "（暂无记忆）" })
                 "agent_add_note" -> { agentMemory.addNote(args.getString("text")); ok("已记录笔记") }
-                "agent_memory_upsert" -> { NebulaApp.instance.vectorMemory.upsert(args.getString("id"), args.getString("text"), args.optJSONObject("metadata") ?: JSONObject()); ok("已建立向量记忆") }
-                "agent_memory_search" -> ok(NebulaApp.instance.vectorMemory.search(args.getString("query"), args.optInt("limit", 8)).joinToString("\n") { "${it.id} [${"%.3f".format(java.util.Locale.US,it.score)}] ${it.text}" }.ifBlank { "（没有相关记忆）" })
-                "agent_task_create" -> okJson(JSONObject().put("task", NebulaApp.instance.longTaskAgent.create(args.getString("goal"), args.getJSONArray("steps")).let { JSONObject().put("id",it.id).put("status",it.status).put("index",it.index) }))
-                "agent_task_list" -> okJson(JSONObject().put("tasks", JSONArray().apply { NebulaApp.instance.longTaskAgent.list().forEach { put(JSONObject().put("id",it.id).put("goal",it.goal).put("status",it.status).put("index",it.index)) } }))
-                "agent_task_run" -> okJson(JSONObject().put("task", NebulaApp.instance.longTaskAgent.run(args.getString("id"), args.optInt("maxSteps", NebulaApp.instance.settings.aiLongTaskBatchSize))?.let { JSONObject().put("id",it.id).put("status",it.status).put("index",it.index).put("result",it.result) } ?: JSONObject().put("error","task not found")))
-                "workflow_save" -> okJson(JSONObject().put("workflow", NebulaApp.instance.workflowEngine.save(args.getString("name"), args.getJSONArray("steps")).let { JSONObject().put("id",it.id).put("name",it.name) }))
-                "workflow_list" -> okJson(JSONObject().put("workflows", JSONArray().apply { NebulaApp.instance.workflowEngine.list().forEach { put(JSONObject().put("id",it.id).put("name",it.name).put("steps",it.steps)) } }))
-                "workflow_run" -> ok(NebulaApp.instance.workflowEngine.run(args.getString("id")).toString())
-                "local_ai_chat" -> { val r=NebulaApp.instance.localAiProvider.ask(args.getString("prompt")); r.fold({ok(it)},{errJson(it.message ?: "local AI failed")}) }
-                "video_ai_analyze" -> { val r=NebulaApp.instance.videoUnderstanding.analyze(args.getString("uri")); r.fold({ok(it)},{errJson(it.message ?: "video analysis failed")}) }
                 "browser_download" -> browserDownload(args.getString("url"))
                 "net_rule_add" -> ok(netRules.add(args.getString("pattern"), args.getString("action")))
                 "net_rule_list" -> ok(netRules.listJson())
@@ -336,8 +309,6 @@ class ToolRegistry(private val context: Context) {
 
         val memorySummary = agentMemory.summaryText()
         if (memorySummary.isNotBlank()) root.put("memory", memorySummary)
-        val query = root.optJSONObject("page")?.optString("title", "") + " " + root.optString("text", "").take(1200)
-        if (query.isNotBlank()) root.put("semanticMemory", NebulaApp.instance.vectorMemory.summary(query, 6))
 
         return okJson(root)
     }

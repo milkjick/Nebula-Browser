@@ -946,8 +946,8 @@ class MainActivity : AppCompatActivity(), WebViewBridge {
     private fun showAiSettings() {
         val box = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(dp(18), dp(8), dp(18), dp(8)) }
         val mode = android.widget.Spinner(this)
-        mode.adapter = android.widget.ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, arrayOf("浏览器 AI（已登录网页，无需 API Key）", "API AI（需要 API Key）", "本地 AI（OpenAI 兼容接口）"))
-        mode.setSelection(when (settings.aiProviderMode) { "api" -> 1; "local" -> 2; else -> 0 })
+        mode.adapter = android.widget.ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, arrayOf("浏览器 AI（已登录网页，无需 API Key）", "API AI（需要 API Key）"))
+        mode.setSelection(if (settings.aiProviderMode == "api") 1 else 0)
 
         val provider = EditText(this).apply { hint = "AI 网页名称，例如 DeepSeek Web"; setSingleLine(true); setText(settings.aiWebProvider) }
         val webUrl = EditText(this).apply { hint = "AI 网页地址"; setSingleLine(true); setText(settings.aiWebUrl) }
@@ -958,10 +958,6 @@ class MainActivity : AppCompatActivity(), WebViewBridge {
         val key = EditText(this).apply { hint = "API Key（仅 API 模式需要）"; setSingleLine(true); setText(settings.aiApiKey); inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD }
         val model = EditText(this).apply { hint = "模型"; setSingleLine(true); setText(settings.aiModel) }
         val base = EditText(this).apply { hint = "API 地址"; setSingleLine(true); setText(settings.aiBaseUrl) }
-        val localTitle = TextView(this).apply { text = "本地 AI：支持 Ollama / LM Studio / vLLM 等 OpenAI 兼容服务"; textSize = 15f; setTypeface(null, Typeface.BOLD) }
-        val localBase = EditText(this).apply { hint = "本地 AI 地址，例如 http://127.0.0.1:11434/v1"; setSingleLine(true); setText(settings.localAiBaseUrl) }
-        val localModel = EditText(this).apply { hint = "本地模型名称，例如 llama3.2"; setSingleLine(true); setText(settings.localAiModel) }
-        val localKey = EditText(this).apply { hint = "本地服务 API Key（可留空）"; setSingleLine(true); setText(settings.localAiApiKey) }
         val confirm = android.widget.CheckBox(this).apply { text = "执行网页操作前必须确认"; isChecked = settings.aiRequireConfirmation }
 
         val webTitle = TextView(this).apply { text = "浏览器 AI：复用已登录的 AI 网页会话"; textSize = 15f; setTypeface(null, Typeface.BOLD) }
@@ -970,11 +966,10 @@ class MainActivity : AppCompatActivity(), WebViewBridge {
         box.addView(space(dp(8))); box.addView(mode); box.addView(space(dp(12))); box.addView(webTitle)
         box.addView(provider); box.addView(space(dp(6))); box.addView(webUrl); box.addView(space(dp(6)))
         box.addView(inputSelector); box.addView(space(dp(6))); box.addView(submitSelector); box.addView(space(dp(6))); box.addView(responseSelector)
-        box.addView(space(dp(14))); box.addView(apiTitle); box.addView(key); box.addView(space(dp(6))); box.addView(model); box.addView(space(dp(6))); box.addView(base)
-        box.addView(space(dp(14))); box.addView(localTitle); box.addView(localBase); box.addView(space(dp(6))); box.addView(localModel); box.addView(space(dp(6))); box.addView(localKey); box.addView(confirm)
+        box.addView(space(dp(14))); box.addView(apiTitle); box.addView(key); box.addView(space(dp(6))); box.addView(model); box.addView(space(dp(6))); box.addView(base); box.addView(confirm)
         box.addView(space(dp(12)))
         box.addView(createButton("保存 AI 设置") {
-            settings.aiProviderMode = when (mode.selectedItemPosition) { 1 -> "api"; 2 -> "local"; else -> "web" }
+            settings.aiProviderMode = if (mode.selectedItemPosition == 1) "api" else "web"
             settings.aiWebProvider = provider.text.toString().trim().ifBlank { "DeepSeek Web" }
             settings.aiWebUrl = webUrl.text.toString().trim().ifBlank { "https://chat.deepseek.com/" }
             settings.aiWebInputSelector = inputSelector.text.toString().trim()
@@ -984,10 +979,7 @@ class MainActivity : AppCompatActivity(), WebViewBridge {
             settings.aiModel = model.text.toString().trim().ifBlank { "deepseek-chat" }
             settings.aiBaseUrl = base.text.toString().trim().ifBlank { "https://api.deepseek.com" }
             settings.aiRequireConfirmation = confirm.isChecked
-            settings.localAiBaseUrl = localBase.text.toString().trim().ifBlank { "http://127.0.0.1:11434/v1" }
-            settings.localAiModel = localModel.text.toString().trim().ifBlank { "llama3.2" }
-            settings.localAiApiKey = localKey.text.toString().trim()
-            toast(when (settings.aiProviderMode) { "web" -> "已保存：浏览器 AI 模式，不需要 API Key"; "local" -> "已保存：本地 AI 模式"; else -> "已保存：API AI 模式" })
+            toast(if (settings.aiProviderMode == "web") "已保存：浏览器 AI 模式，不需要 API Key" else "已保存：API AI 模式")
         })
         box.addView(space(dp(8)))
         box.addView(createButton("测试浏览器 AI 会话") {
@@ -1030,61 +1022,15 @@ fun showAiAgent() {
             aiFilePicker.launch(arrayOf("text/*", "application/json", "application/xml", "application/javascript", "application/x-javascript", "text/csv", "text/markdown"))
         }
         box.addView(TextView(this).apply { text="Nebula AI Agent"; textSize=22f; setTypeface(null,Typeface.BOLD) })
-        box.addView(TextView(this).apply { text=when (settings.aiProviderMode) { "web" -> "当前 AI：${settings.aiWebProvider}（浏览器登录会话）"; "local" -> "当前 AI：${settings.localAiModel}（本地模型）"; else -> "当前 AI：${settings.aiModel}（API）" }; textSize=13f; setTextColor(Color.DKGRAY) })
+        box.addView(TextView(this).apply { text=if (settings.aiProviderMode == "web") "当前 AI：${settings.aiWebProvider}（浏览器登录会话）" else "当前 AI：${settings.aiModel}（API）"; textSize=13f; setTextColor(Color.DKGRAY) })
         if (settings.aiProviderMode == "web") {
-            // WebAiProvider intentionally keeps one WebView instance so the AI
-            // website session/cookies survive dialog changes. A View can only
-            // have one parent, however; showAiAgent may be opened again after
-            // the same WebView was attached to a previous dialog. Always detach
-            // it from its previous parent before attaching it to this panel.
             val aiWeb = webAiProvider.webView()
-            detachFromParent(aiWeb)
             box.addView(aiWeb, LinearLayout.LayoutParams(-1, dp(220)))
             webAiProvider.loadProvider()
         }
         box.addView(space(dp(8))); box.addView(request); box.addView(space(dp(8))); box.addView(fileButton); box.addView(space(dp(8))); box.addView(run); box.addView(output)
         box.addView(createButton("AI 设置") { showAiSettings() })
-        box.addView(createButton("Agent 高级功能（长任务 / 向量记忆 / 工作流 / 本地 AI / 视频理解）") { showAgentAdvanced() })
         showFullScreenDialog("Nebula AI Agent", box)
-    }
-
-    private fun showAgentAdvanced() {
-        val box = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(dp(16), dp(8), dp(16), dp(8)) }
-        val info = TextView(this).apply { text = "长任务、语义记忆、工作流、本地模型和视频理解都由 ToolRegistry 统一管理。"; textSize = 13f; setTextColor(Color.DKGRAY) }
-        box.addView(info); box.addView(space(dp(10)))
-        box.addView(createButton("长任务 Agent") {
-            val goal = EditText(this).apply { hint = "任务目标" }
-            val steps = EditText(this).apply { hint = "步骤 JSON，例如 [{\"action\":\"browser_page_text\",\"arguments\":{}}]"; minLines = 4; gravity = Gravity.TOP }
-            val c = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL; setPadding(dp(8),0,dp(8),0); addView(goal); addView(steps) }
-            MaterialAlertDialogBuilder(this).setTitle("创建可恢复长任务").setView(c).setNegativeButton("取消", null).setPositiveButton("创建") { _,_ ->
-                try { val t=(application as NebulaApp).longTaskAgent.create(goal.text.toString().trim(), org.json.JSONArray(steps.text.toString().trim())); toast("任务已创建：${t.id.take(8)}") }
-                catch(e:Exception){ toast("步骤 JSON 无效：${e.message}") }
-            }.show()
-        })
-        box.addView(createButton("语义记忆搜索") {
-            val q=EditText(this).apply{hint="输入要回忆的内容"}
-            MaterialAlertDialogBuilder(this).setTitle("Agent 长记忆向量检索").setView(q).setNegativeButton("取消",null).setPositiveButton("搜索"){_,_->
-                lifecycleScope.launch(Dispatchers.IO){val r=(application as NebulaApp).vectorMemory.summary(q.text.toString(),8);runOnUiThread{MaterialAlertDialogBuilder(this@MainActivity).setTitle("相关记忆").setMessage(r.ifBlank{"没有找到相关记忆"}).setPositiveButton("确定",null).show()}}
-            }.show()
-        })
-        box.addView(createButton("本地 AI 测试") {
-            val q=EditText(this).apply{hint="给本地模型发送测试问题";minLines=3}
-            MaterialAlertDialogBuilder(this).setTitle("本地 AI").setView(q).setNegativeButton("取消",null).setPositiveButton("发送"){_,_->
-                lifecycleScope.launch(Dispatchers.IO){val r=(application as NebulaApp).localAiProvider.ask(q.text.toString());runOnUiThread{MaterialAlertDialogBuilder(this@MainActivity).setTitle("本地 AI 回复").setMessage(r.getOrElse{"错误：${it.message}"}).setPositiveButton("确定",null).show()}}
-            }.show()
-        })
-        box.addView(createButton("视频 AI 理解") {
-            val q=EditText(this).apply{hint="视频 URI（content://、file:// 或可访问的 http(s) URL）"}
-            MaterialAlertDialogBuilder(this).setTitle("视频 AI 理解").setView(q).setNegativeButton("取消",null).setPositiveButton("分析"){_,_->
-                lifecycleScope.launch(Dispatchers.IO){val r=(application as NebulaApp).videoUnderstanding.analyze(q.text.toString().trim());runOnUiThread{MaterialAlertDialogBuilder(this@MainActivity).setTitle("视频分析结果").setMessage(r.getOrElse{"错误：${it.message}"}).setPositiveButton("确定",null).show()}}
-            }.show()
-        })
-        box.addView(createButton("工作流") {
-            val name=EditText(this).apply{hint="工作流名称"}; val steps=EditText(this).apply{hint="步骤 JSON";minLines=4;gravity=Gravity.TOP}
-            val c=LinearLayout(this).apply{orientation=LinearLayout.VERTICAL;addView(name);addView(steps)}
-            MaterialAlertDialogBuilder(this).setTitle("保存工作流").setView(c).setNegativeButton("取消",null).setPositiveButton("保存"){_,_->try{val w=(application as NebulaApp).workflowEngine.save(name.text.toString().trim(),org.json.JSONArray(steps.text.toString()));toast("工作流已保存：${w.name}")}catch(e:Exception){toast("步骤 JSON 无效：${e.message}")}}.show()
-        })
-        showFullScreenDialog("Agent 高级功能", box)
     }
 
     private fun showAgentMemory() {
