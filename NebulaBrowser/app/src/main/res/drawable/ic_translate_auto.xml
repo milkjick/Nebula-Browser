@@ -1,0 +1,17 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="24" android:viewportHeight="24">
+    <!-- 文字气泡，星云青 -->
+    <path android:fillColor="#00000000"
+        android:strokeColor="#FF22D3EE" android:strokeWidth="2"
+        android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M3,5 H13 V13 H9 L7,15.5 V13 H3 Z" />
+    <!-- 自动循环箭头，星云紫 -->
+    <path android:fillColor="#00000000"
+        android:strokeColor="#FFA78BFA" android:strokeWidth="2"
+        android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M14,14 A5,5 0 1,1 13,10.5 M13,7.5 V10.5 H16" />
+    <!-- 金星点缀 -->
+    <path android:fillColor="#FFF59E0B"
+        android:pathData="M20,17 L20.6,18.4 L22,19 L20.6,19.6 L20,21 L19.4,19.6 L18,19 L19.4,18.4 Z" />
+</vector>
