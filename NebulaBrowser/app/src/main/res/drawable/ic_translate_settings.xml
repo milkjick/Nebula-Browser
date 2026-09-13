@@ -1,0 +1,21 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="24" android:viewportHeight="24">
+    <!-- 文字气泡，星云青 -->
+    <path android:fillColor="#00000000"
+        android:strokeColor="#FF22D3EE" android:strokeWidth="2"
+        android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M3,4 H13 V12 H9 L7,14.5 V12 H3 Z" />
+    <!-- 齿轮，星云紫 -->
+    <path android:fillColor="#00000000"
+        android:strokeColor="#FFA78BFA" android:strokeWidth="1.8"
+        android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M17,14.5 m-2.6,0 a2.6,2.6 0 1,0 5.2,0 a2.6,2.6 0 1,0 -5.2,0" />
+    <path android:fillColor="#00000000"
+        android:strokeColor="#FFA78BFA" android:strokeWidth="1.6"
+        android:strokeLineCap="round"
+        android:pathData="M17,10.3 V11.6 M17,17.4 V18.7 M20.7,14.5 H19.4 M14.6,14.5 H13.3 M19.6,12.1 L18.7,13 M15.3,16 L14.4,16.9 M19.6,16.9 L18.7,16 M15.3,13 L14.4,12.1" />
+    <!-- 金星点缀 -->
+    <path android:fillColor="#FFF59E0B"
+        android:pathData="M9,1.5 L9.6,2.9 L11,3.5 L9.6,4.1 L9,5.5 L8.4,4.1 L7,3.5 L8.4,2.9 Z" />
+</vector>
